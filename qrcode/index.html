@@ -1,0 +1,67 @@
+<!--
+ * @fileName: 
+ * @Date: 2020-10-10 17:39:48
+ * @Author: manyao.zhu
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <input type="file" id='file' value='选择需要解析的二维码'>
+
+    <li class="code-result"></li>
+
+    <div id="qrcode"></div>
+
+    <input type="text" value='' id='text'>
+
+    <button class="make-code">生成二维码</button> <br/>
+    <button class="clear">清除二维码</button> <br/>
+    <button class="init">再次初始化</button>
+  </div>
+
+  <script>
+      // 初始化生成二维码
+      function initQrCode() {
+          QRCodeSdk.initCode('qrcode', {
+              text: '张三李四王五',
+          });
+      }
+
+      initQrCode();
+
+      // 再次手动生成二维码
+      $('.make-code').click(function () {
+          const text = $('#text').val();
+          QRCodeSdk.makeCode(text);
+      })
+
+
+      // 解析二维码
+      $('#file').change(function () {
+          const file = $(this)[0].files[0]
+          QRCodeSdk.deCode(file, (msg) => {
+            console.log(msg);
+            $('.code-result').html(msg);
+          })
+      })
+
+      $('.clear').click(function () {
+        QRCodeSdk.clearCode();
+      })
+
+      $('.init').click(function () {
+        initQrCode();
+      })
+  </script>
+</body>
+
+</html>
